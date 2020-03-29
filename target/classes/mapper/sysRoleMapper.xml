@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it.cn.dao.SysRoleDao">
+
+    <sql id="RoleColumns">
+        a.id AS "id",
+        a.rolename AS "rolename",
+        a.description AS "description",
+        a.del_flag AS "delflag"
+    </sql>
+
+    <sql id="RoleDaoJoins">
+    </sql>
+
+    <select id="get" resultType="SysRole">
+        SELECT
+        <include refid="RoleColumns"/>
+        FROM sys_role a
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="SysRole"  parameterType="SysRole">
+        SELECT
+        <include refid="RoleColumns"/>
+        FROM sys_role a
+        WHERE  1=1
+        <if test="rolename!=null and rolename!=''">
+            AND a.rolename LIKE "%"#{rolename}"%"
+        </if>
+        AND a.del_flag = '0'
+    </select>
+
+    <insert id="insert">
+        INSERT INTO sys_role (id,rolename,description,del_flag)
+        VALUES (#{id},#{rolename},#{description},#{delflag})
+    </insert>
+
+    <update id="update"  parameterType="SysRole">
+        UPDATE sys_role SET
+        rolename = #{rolename},
+        description = #{description}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        UPDATE sys_role a SET a.del_flag = '1' WHERE a.id = #{id}
+    </delete>
+</mapper>

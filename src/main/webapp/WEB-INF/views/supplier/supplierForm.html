@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="${ctxPath}/static/layui/css/layui.css" media="all">
+</head>
+<body background="/img/login.png">
+<div class="layui-form" lay-filter="layuiadmin-form-syssupplieradmin" id="layuiadmin-form"
+     style="padding: 20px;">
+    <input type="hidden" value="${supplier.id!}" class="layui-input" name="id">
+    <input type="hidden" value="${op}" id="op">
+    <div class="layui-form-item">
+        <label class="layui-form-label">供应商编号</label>
+        <div class="layui-input-block">
+            <input type="text" id="spid" name="spid" required lay-verify="required" placeholder="请输入供应商编号" autocomplete="off"
+                   class="layui-input" value="${supplier.spid!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">供应商名称</label>
+        <div class="layui-input-block">
+            <input type="text" id="spname" name="spname" required lay-verify="required" placeholder="请输入供应商名称" autocomplete="off"
+                   class="layui-input" value="${supplier.spname!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="sparea" required lay-verify="required" placeholder="请输入地区" autocomplete="off"
+                   class="layui-input" value="${supplier.sparea!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <input type="text" name="spmeno" required lay-verify="required" placeholder="备注" autocomplete="off"
+                   class="layui-input" value="${supplier.spmeno!}">
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="LAY-Supplier-submit" id="LAY-Supplier-submit" value="确认">
+    </div>
+</div>
+<script src="/static/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/static/'
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','form','laydate','upload'], function () {
+        var $ = layui.$,
+            form = layui.form,
+            upload = layui.upload,
+            laydate = layui.laydate;
+
+        debugger;
+        if ($("#op").val() == "") {
+            $("#display").hide();
+        };
+
+        if ($("#op").val() == "view") {
+            $("input").attr("readOnly", "true");
+        }
+    })
+</script>
+</body>
+</html>

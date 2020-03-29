@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="${ctxPath}/static/layui/css/layui.css" media="all">
+</head>
+<body background="/img/login.png">
+<div class="layui-form" lay-filter="layuiadmin-form-sysuseradmin" id="layuiadmin-form"
+     style="padding: 20px;">
+    <input type="hidden" class="layui-input" name="sysid">
+    <input type="hidden" value="${op}" id="op">
+    <div class="layui-form-item">
+        <label class="layui-form-label">会员账号</label>
+        <div class="layui-input-block">
+            <input type="text" id="sysuserLogin" name="sysuserLogin" required lay-verify="required" placeholder="请输入用户名称" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">会员密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="sysuserPassWord" required lay-verify="required" placeholder="请输入用户密码" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">会员名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="sysuserName" required lay-verify="required" placeholder="请输入用户名称" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">会员年龄</label>
+        <div class="layui-input-block">
+            <input type="text" name="sysuserAge" required lay-verify="required" placeholder="请输入用户年龄" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" id="display">
+        <label class="layui-form-label">注册日期</label>
+        <div class="layui-input-block">
+            <input type="text" name="syscreateTime" id="syscreateTime"  autocomplete="off" placeholder="请选择注册日期"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色</label>
+        <div class="layui-input-block">
+            <select name="roleId" lay-filter="roleId">
+                <option value="">--请选择--</option>
+                <% for(role in roles){ %>
+                <option value="${role.id}"
+                <% if(role.id == user.roleId){ %>
+                selected
+                <% } %>
+                >${role.rolename}</option>
+                <% } %>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">文件上传</label>
+        <div class="layui-input-block">
+            <input  type="hidden" name="sysFile" id="sysfilename" style="width: 86%;float: left;"  placeholder="请上传图片" autocomplete="off" class="layui-input">
+            <div class="layui-inline">
+                <div id="dis"></div>
+                <img class="layui-upload-img" style="width: 100px;height: 100px;" src="${user.sysFile!}" id="imgback">
+            </div>
+            <div class="layui-inline">
+                <button type="button" class="layui-btn" id="layuiadmin-upload-user" style="margin-left: 10%;">上传图片</button>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="LAY-SysUser-submit" id="LAY-SysUser-submit" value="确认">
+    </div>
+</div>
+<script src="/static/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/static/'
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','form','laydate','upload'], function () {
+        var $ = layui.$,
+            form = layui.form,
+            upload = layui.upload,
+            laydate = layui.laydate;
+
+        form.val("layuiadmin-form-sysuseradmin",{
+            "sysid":"${user.sysid!}"
+            ,"sysuserLogin":"${user.sysuserLogin!}"
+            ,"sysuserPassWord":"${user.sysuserPassWord!}"
+            ,"sysuserName":"${user.sysuserName!}"
+            ,"sysuserAge":"${user.sysuserAge!}"
+            ,"syscreateTime":"${trim(user.syscreateTime!,'yyyy-MM-dd HH:mm:ss')}"
+            ,"sysFile":"${user.sysFile!}"
+        });
+
+        // debugger;
+        if ($("#op").val() == "") {
+            $("#display").hide();
+        };
+
+        //判断img路径是否为空
+        if(isEmpty($("#sysfilename").val())){
+            $("#imgback").hide()
+            $("#dis").html("<h3 style='color: red;'>请上传图片</h3>")
+        }
+
+        if ($("#op").val() == "view") {
+            $("input").attr("readOnly", "true");
+            $("#syscreateTime").attr("disabled","disabled")
+        }
+
+        if ($("#op").val() == "edit") {
+            $("#syscreateTime").attr("disabled","disabled")
+            $("#sysuserLogin").attr("disabled","disabled")
+        };
+
+        /**
+         * 判断是否是空
+         */
+        function isEmpty(value){
+            if(value == null || value == "" || value == "undefined" || value == undefined || value == "null"){
+                return true;
+            }
+            else{
+                value = value.replace(/\s/g,"");
+                if(value == ""){
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        //图片上传
+        var uploadInst = upload.render({
+            elem: '#layuiadmin-upload-user'
+            ,url: '/upload/file'
+            , accept: 'file'
+            , acceptMime: 'image/*'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $("#imgback").show();
+                    $('#imgback').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                debugger;
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                if (res.code == 0){
+                    $("#sysfilename").val(res.filePath);
+                    $("#dis").hide()
+                    layer.msg(res.msg)
+                }
+            }
+        });
+
+        laydate.render({
+            elem: '#syscreateTime', //指定元素
+            type: 'datetime'
+        });
+
+    })
+</script>
+</body>
+</html>

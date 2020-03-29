@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/style/admin.css" media="all">
+    <style type="text/css">
+        .layui-table-cell {
+            height: auto;
+            line-height: 39px;
+        }
+    </style>
+
+</head>
+<body background="/img/login.png">
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <input type="text" name="spname" placeholder="供应商名称" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-inline">
+                    <button class="search layui-btn layuiadmin-btn-Supplier" lay-submit lay-filter="LAY-Supplier-search">
+                        <div class="layui-inline">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn" style="font-size: 20px;"></i>
+                        </div>搜索
+                    </button>
+                    <button data-type="reset" class="layui-btn layuiadmin-btn-Supplier">
+                        <div class="layui-inline">
+                            <i class="layui-icon layui-icon-refresh layuiadmin-button-btn"  style="font-size: 20px;"></i>
+                        </div>重置
+                    </button>
+                    <button class="layui-btn layuiadmin-btn-Supplier" data-type="add">
+                        <div class="layui-inline">
+                            <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>
+                        </div>录入
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-Supplier-table-list" lay-filter="LAY-Supplier-table-list"></table>
+            <script type="text/html" id="table-toolbar">
+                <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view"><i class="layui-icon layui-icon-read"></i>查看</a>
+                <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script  type="text/javascript" src="/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/static/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table','admin','supplier'], function(){
+        var $ = layui.$
+            , form = layui.form
+            , admin = layui.admin
+            , table = layui.table;
+        //监听搜索
+        form.on('submit(LAY-Supplier-search)', function (data) {
+            var field = data.field;
+            //执行重载
+            table.reload('LAY-Supplier-table-list', {
+                page:{
+                    curr:1  //重新以第一页开始
+                },
+                where: field
+            });
+        });
+
+        //事件
+        var active = {
+            add: function () {
+                layer.open({
+                    skin:'layui-layer-molv',
+                    type: 2
+                    , title: '供应商录入'
+                    , content: '/supplier/form'
+                    , maxmin: true
+                    ,shade:0.8
+                    , area: ['50%', '50%']
+                    , btn: ['确定', '取消']
+                    , yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe' + index]
+                            , submitID = 'LAY-Supplier-submit'
+                            , submit = layero.find('iframe').contents().find('#' + submitID);
+
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                            var op = "add";
+                            var field = data.field;
+                            admin.req({
+                                url: '/supplier/save?op =' + op
+                                , type: 'post'
+                                , data: field
+                                , success: function (result) {
+                                    layer.msg(result.msg, {time: 2000, icon: 6});
+                                    table.reload('LAY-Supplier-table-list');
+                                }, error: function (ex) {
+                                    layer.alert(ex);
+                                }
+                            });
+                            layer.close(index);
+                        });
+
+                        submit.trigger('click');
+                    }
+                });
+            },
+            reset: function () {
+                table.reload('LAY-Supplier-table-list',{
+                    page:{
+                        curr:1  //重新以第一页开始
+                    }
+                });
+                $('.layui-form input').val('');
+                $('.search').click();
+            }
+        };
+
+        $('.layui-btn.layuiadmin-btn-Supplier').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</body>
+</html>

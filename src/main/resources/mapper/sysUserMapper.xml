@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it.cn.dao.SysUserDao">
+
+    <sql id="UserColumns">
+        a.sys_id AS "sysid",
+        a.sys_createTime AS "syscreateTime",
+        a.sys_userAge AS "sysuserAge",
+        a.sys_userLogin AS "sysuserLogin",
+        a.sys_userName AS "sysuserName",
+        a.sys_status AS "status",
+        a.sys_userPassWord AS "sysuserPassWord",
+        a.sys_file AS "sysFile",
+        a.sys_role AS "roleId",
+        r.rolename AS "role.rolename"
+    </sql>
+
+    <sql id="UserDaoJoins">
+        LEFT JOIN sys_role r on r.id = a.sys_role
+    </sql>
+
+    <select id="checkLogin" resultType="SysUser">
+        select
+        <include refid="UserColumns"/>
+        from sys_user a
+        <include refid="UserDaoJoins"/>
+        WHERE a.sys_userLogin=#{sysuserLogin}
+    </select>
+
+    <select id="checkPsd" resultType="SysUser">
+        select
+        <include refid="UserColumns"/>
+        from sys_user a
+        <include refid="UserDaoJoins"/>
+        WHERE a.sys_userPassWord=#{sysuserPassWord}
+    </select>
+
+    <select id="findLogin" resultType="SysUser">
+        select
+        <include refid="UserColumns"/>
+        from sys_user a
+        <include refid="UserDaoJoins"/>
+        WHERE a.sys_userLogin=#{sysuserLogin} AND a.sys_userPassWord = #{sysuserPassWord}
+    </select>
+
+    <select id="findList" resultType="SysUser" parameterType="SysUser">
+        select
+        <include refid="UserColumns"/>
+        from sys_user a
+        <include refid="UserDaoJoins"/>
+        <where>
+            <if test="sysuserLogin!=null and sysuserLogin!=''">
+                a.sys_userLogin = #{sysuserLogin}
+            </if>
+            AND a.sys_status = "0"
+        </where>
+    </select>
+
+    <select id="get" resultType="SysUser">
+        SELECT
+        <include refid="UserColumns"/>
+        FROM sys_user a
+        <include refid="UserDaoJoins"/>
+        WHERE a.sys_id = #{sysid}
+    </select>
+
+    <update id="update" parameterType="SysUser">
+        UPDATE sys_user
+        <!--<trim prefix="SET" suffixOverrides=",">-->
+        <set>
+            <if test="sysuserName!=null and sysuserName != ''">
+                sys_userName = #{sysuserName},
+            </if>
+            <if test="sysuserLogin!=null and sysuserLogin != ''">
+                sys_userLogin = #{sysuserLogin},
+            </if>
+            <if test="sysuserPassWord!=null and sysuserPassWord != ''">
+                sys_userPassWord = #{sysuserPassWord},
+            </if>
+            <if test="sysuserAge!=null">
+                sys_userAge = #{sysuserAge},
+            </if>
+            <if test="syscreateTime!=null">
+                sys_createTime = #{syscreateTime},
+            </if>
+            <if test="sysFile!=null">
+                sys_file = #{sysFile},
+            </if>
+            <if test="roleId!=null">
+                sys_role = #{roleId}
+            </if>
+        </set>
+        <!--</trim>-->
+        where sys_id = #{sysid}
+    </update>
+
+    <insert id="insert">
+        INSERT INTO sys_user(
+        sys_id,
+        sys_userLogin,
+        sys_userName,
+        sys_userPassWord,
+        sys_userAge,
+        sys_createTime,
+        sys_file,
+        sys_role,
+        sys_status
+        )
+        VALUES(
+        #{sysid},
+        #{sysuserLogin},
+        #{sysuserName},
+        #{sysuserPassWord},
+        #{sysuserAge},
+        #{syscreateTime},
+        #{sysFile},
+        #{roleId},
+        #{status}
+        )
+    </insert>
+
+    <delete id="delete">
+        UPDATE sys_user a set a.sys_status = "1" WHERE sys_id = #{sysid}
+    </delete>
+</mapper>

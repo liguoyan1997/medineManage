@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/style/admin.css" media="all">
+    <style>
+        #bod{
+            background: url("static/img/admin.jpg");
+        }
+        .layui-logo{
+            overflow-wrap: break-word;
+            text-shadow: 2px 2px 10px rgb(192, 31, 14);
+        }
+        .layui-nav-item{
+            color: #b8c0bb;
+            text-shadow: 2px 2px 10px rgb(124, 34, 128);
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+<div id="LAY_app">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header" style="background:#20222A;">
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item layadmin-flexible" lay-unselect>
+                    <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩" style="color: white;">
+                        <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;" layadmin-event="refresh" title="刷新" style="color: white">
+                        <i class="layui-icon layui-icon-refresh-3"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <!--<li class="layui-nav-item">
+                    <div style="margin-right: -10px;margin-top: 12px;height: 25px;
+                    width: 100%;border-radius: 5px;background-color: aliceblue;">
+                        <iframe scrolling="no" frameborder="0" allowtransparency="true"
+                                src="http://i.tianqi.com/index.php?c=code&id=34&icon=1&num=3"></iframe>
+                    </div>
+                </li>-->
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="${userFile!}" class="layui-nav-img">
+                        <font style="color:white;">${sysuser!}</font>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd data-name="system">
+                            <a lay-href="/sysuser/personMessage">个人信息</a>
+                        </dd>
+                        <dd data-name="system">
+                            <a lay-href="/sysuser/updatePsdHtml">修改密码</a>
+                        </dd>
+                    </dl>
+                    <!--<dl class="layui-nav-child">-->
+                        <!--<dd><a href="#">基本资料</a></dd>-->
+                        <!--<dd><a href="#">修改密码</a></dd>-->
+                    <!--</dl>-->
+                </li>
+                <li class="layui-nav-item"><a href="/exitLogin" style="color: white;">退出</a></li>
+            </ul>
+        </div>
+        <!-- 页面标签 -->
+        <div class="layadmin-pagetabs" id="LAY_app_tabs" style="background: #20222A;">
+            <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"  style="color: white;"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"  style="color: white;"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-down"  style="color: white;">
+                <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+                    <li class="layui-nav-item" lay-unselect>
+                        <a href="javascript:;"></a>
+                        <dl class="layui-nav-child layui-anim-fadein">
+                            <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
+                            <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
+                            <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+            <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
+                <ul class="layui-tab-title" id="LAY_app_tabsheader">
+                    <li lay-id="/indexMain" lay-attr="/indexMain" class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
+                </ul>
+            </div>
+        </div>
+        <!-- 侧边菜单 -->
+        <div class="layui-side layui-side-menu">
+            <div class="layui-side-scroll">
+                <div class="layui-logo" lay-href="#">
+                    <span>药品管理系统</span>
+                </div>
+
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;" lay-tips="主页" lay-direction="2">
+                            <i class="layui-icon layui-icon-home"></i>
+                            <cite>主页</cite>
+                        </a>
+                    </li>
+                    <!--用户模块-->
+                    <li data-name="component" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="用户管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-username"></i>
+                            <cite>系统用户管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="user">
+                                <a lay-href="/sysuser">系统用户</a>
+                            </dd>
+                            <dd data-name="user">
+                                <a lay-href="/sysRole">系统角色</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <!--分析数据列表展示模块-->
+                    <li data-name="sale" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="销售管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-flag"></i>
+                            <cite>药品销售管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="Sale">
+                                <a lay-href="/salesorder">销售单</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li data-name="purchase" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="进货管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-flag"></i>
+                            <cite>药品进货管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="purchase">
+                                <a lay-href="/medicine">进货单</a>
+                            </dd>
+                            <dd data-name="purchase">
+                                <a lay-href="/supplier">供应商</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li data-name="badcargo" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="库存管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-flag"></i>
+                            <cite>药品库存管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="badcargo">
+                                <a lay-href="/stock">库存单</a>
+                            </dd>
+                            <!--<dd data-name="badcargo">
+                                <a lay-href="/stock">坏货药品</a>
+                            </dd>-->
+                            <dd data-name="badcargo">
+                                <a lay-href="/stock/Overdue">已过期药品</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li data-name="workers" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="客户管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-flag"></i>
+                            <cite>客户管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="workers">
+                                <a lay-href="/staff">客户列表</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <!--分析数据图表展示模块-->
+                    <li data-name="Chart" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="图表管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-fire"></i>
+                            <cite>图表管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="chart">
+                                <a lay-href="/echart/mychart">药品类别统计</a>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="chart">
+                                <a lay-href="/echart/timechart">药品过期统计</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <!--日志管理模块-->
+                    <li data-name="Chart" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="日志管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-diamond"></i>
+                            <cite>日志管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="chart">
+                                <a lay-href="/sysLog">日志列表</a>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 主体内容 -->
+        <div class="layui-body" id="LAY_app_body">
+            <div class="layadmin-tabsbody-item layui-show">
+                <iframe id="bod" style="padding:0;margin:0;"  allowTransparency="true"  src="indexMain" frameborder="0" class="layadmin-iframe"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/static/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use('index');
+</script>
+</body>
+</html>
+
+

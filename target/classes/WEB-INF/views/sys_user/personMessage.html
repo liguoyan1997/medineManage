@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/layui/css/style.css">
+    <style>
+        .layui-form-label{
+            width: 20%;
+            color: white;
+            background: green;
+        }
+    </style>
+</head>
+<body background="/img/login.png">
+<div class="login-main">
+    <header class="layui-elip">个人信息</header>
+    <form class="layui-form">
+        <div class="layui-input-inline">
+            <label class="layui-form-label">用户账号</label>
+            <input type="text" disabled name="sysuserLogin" style="width: 70%" value="${sysuser.sysuserLogin!}" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label">用户密码</label>
+            <input type="text" disabled name="sysuserPassWord" style="width: 70%" value="${sysuser.sysuserPassWord!}" autocomplete="off"
+                   class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label">用户名称</label>
+            <input type="text" disabled name="sysuserName" style="width: 70%" value="${sysuser.sysuserName!}" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label">用户年龄</label>
+            <input type="text" disabled name="sysuserAge" style="width: 70%" value="${sysuser.sysuserAge!}" autocomplete="off"
+                   class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label">创建时间</label>
+            <input type="text" disabled id="syscreateTime" name="syscreateTime" style="width: 70%" value="${trim(sysuser.syscreateTime!,'yyyy-MM-dd HH:mm:ss')}" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label">用户角色</label>
+            <input type="text" disabled name="roleId" style="width: 70%" value="${sysrole.rolename!}" autocomplete="off"
+                   class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label">用户IP</label>
+            <input type="text" disabled  style="width: 70%" value="${ip!}" autocomplete="off"
+                   class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label">用户主机名</label>
+            <input type="text" disabled  style="width: 70%" value="${ipName!}" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </form>
+</div>
+<script src="/static/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/static/'
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','laydate'], function () {
+        var $ = layui.$,
+            laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#syscreateTime', //指定元素
+            type: 'datetime'
+        });
+    })
+</script>
+</body>
+</html>

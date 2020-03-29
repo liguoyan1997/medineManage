@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it.cn.dao.SupplierDao">
+
+    <sql id="SupplierColumns">
+        a.id AS "id",
+        a.spid AS "spid",
+        a.spname AS "spname",
+        a.sparea AS "sparea",
+        a.spmeno AS "spmeno",
+        a.status AS "status"
+    </sql>
+
+    <select id="findList" resultType="Supplier" parameterType="Supplier">
+        select
+        <include refid="SupplierColumns" />
+        from supplier a
+        where 1=1
+        <if test="spname!=null and spname!=''">
+            AND a.spname LIKE "%"#{spname}"%"
+        </if>
+        AND a.status = "0"
+    </select>
+
+    <select id="get" resultType="Supplier">
+        SELECT
+        <include refid="SupplierColumns" />
+        FROM supplier a
+        WHERE  a.id = #{id}
+    </select>
+
+    <update id="update"  parameterType="Supplier">
+        UPDATE supplier  SET
+        spid = #{spid},
+        spname = #{spname},
+        sparea = #{sparea},
+        spmeno = #{spmeno}
+        where id = #{id}
+    </update>
+
+    <insert id="insert">
+        INSERT INTO supplier(
+        id,
+        spid,
+        spname,
+        sparea,
+        spmeno,
+        status
+        )
+        VALUES(
+        #{id},
+        #{spid},
+        #{spname},
+        #{sparea},
+        #{spmeno},
+        #{status}
+        )
+    </insert>
+
+    <delete id="delete">
+        UPDATE supplier a SET a.status = 1 WHERE id = #{id}
+    </delete>
+</mapper>

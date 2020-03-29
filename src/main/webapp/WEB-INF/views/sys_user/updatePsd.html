@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/layui/css/style.css">
+    <style>
+        .layui-form-label{
+            width: 20%;
+            color: white;
+            background: green;
+        }
+    </style>
+</head>
+<body background="/img/login.png">
+<div class="login-main">
+    <header class="layui-elip">密码更新</header>
+    <form class="layui-form">
+        <div class="layui-input-inline">
+            <label class="layui-form-label">初始密码</label>
+            <input type="text" id="sysuserPassWord" name="sysuserPassWord" style="width: 70%" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label">改后密码</label>
+            <input type="text" id="newPassWord" name="newPassWord" style="width: 70%"  autocomplete="off"
+                   class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <label class="layui-form-label">确认密码</label>
+            <input type="text" id="onNewPassWord" name="onNewPassWord" style="width: 70%" class="layui-input">
+        </div>
+        <div class="layui-input-inline login-btn">
+            <button type="submit" lay-submit lay-filter="sub" class="layui-btn">更改密码</button>
+        </div>
+    </form>
+</div>
+<script src="/static/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/static/'
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','form'], function () {
+        var $ = layui.$,
+            form = layui.form;
+
+        // 为密码添加正则验证
+        $('#newPassWord').blur(function() {
+            var reg = /^[\w]{6,12}$/;
+            if(!($('#newPassWord').val().match(reg))){
+                layer.msg('请输入合法密码');
+            }
+        });
+
+        //验证两次密码是否一致
+        $('#onNewPassWord').blur(function() {
+            if($('#newPassWord').val() != $('#onNewPassWord').val()){
+                layer.msg('两次输入密码不一致!');
+            }
+        });
+
+        $("#sysuserPassWord").blur(function () {
+            var sysuserPassWord = $("#sysuserPassWord").val();
+            //验证密码是否正确
+            $.ajax({
+                url:'/sysuser/updatePsd',
+                type:'post',
+                dataType:'text',
+                data:{sysuserPassWord:sysuserPassWord},
+                success:function(data){
+                    debugger;
+                    if (data == "0") {
+                        layer.msg('初始密码输入错误! ')
+                    }
+                }
+            })
+        })
+
+        form.on('submit(sub)', function(data) {
+            var onNewPassWord = $("#onNewPassWord").val();
+            $.ajax({
+                url:'/sysuser/updatemysqlPsd',
+                data:{"onNewPassWord":onNewPassWord},
+                dataType:'text',
+                type:'post',
+                success:function (data) {
+                    //这里写时间到后执行的代码
+                    if(data == 0){
+                        alert("密码修改失败");
+                        return false;
+                    }
+                    parent.layui.admin.events.closeThisTabs()
+                    // layer.msg("密码修改成功")
+                }
+            })
+        })
+    })
+</script>
+</body>
+</html>

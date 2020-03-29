@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/style/admin.css" media="all">
+    <style type="text/css">
+        .layui-table-cell {
+            height: auto;
+            line-height: 39px;
+        }
+    </style>
+
+</head>
+<body background="/img/login.png">
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <input type="text" name="mname" placeholder="药品名称" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-inline">
+                    <button class="search layui-btn layuiadmin-btn-Stock1" lay-submit lay-filter="LAY-Stock1-search">
+                        <div class="layui-inline">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn" style="font-size: 20px;"></i>
+                        </div>搜索
+                    </button>
+                    <button data-type="reset" class="layui-btn layuiadmin-btn-Stock1">
+                        <div class="layui-inline">
+                            <i class="layui-icon layui-icon-refresh layuiadmin-button-btn"  style="font-size: 20px;"></i>
+                        </div>重置
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-Stock1-table-list" lay-filter="LAY-Stock1-table-list"></table>
+            <script type="text/html" id="table-toolbar">
+                <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon layui-icon-delete"></i>销毁</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script  type="text/javascript" src="/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/static/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table','admin','Overduestock'], function(){
+        var $ = layui.$
+            , form = layui.form
+            , admin = layui.admin
+            , table = layui.table;
+        //监听搜索
+        form.on('submit(LAY-Stock1-search)', function (data) {
+            var field = data.field;
+            //执行重载
+            table.reload('LAY-Stock1-table-list', {
+                page:{
+                    curr:1  //重新以第一页开始
+                },
+                where: field
+            });
+        });
+    });
+</script>
+</body>
+</html>

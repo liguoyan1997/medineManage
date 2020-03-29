@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="${ctxPath}/static/layui/css/layui.css" media="all">
+</head>
+<body background="/img/login.png">
+<div class="layui-form" lay-filter="layuiadmin-form-sysstockadmin" id="layuiadmin-form"
+     style="padding: 20px;">
+    <input type="hidden" value="${stock.id!}" class="layui-input" name="id">
+    <input type="hidden" value="${op}" id="op">
+    <div class="layui-form-item"  id="mid">
+        <label class="layui-form-label">药品编号</label>
+        <div class="layui-input-block">
+            <select name="mid" lay-filter="mid" id="mmid">
+                <option value="">--请选择--</option>
+                <% for(medicine in medicines){ %>
+                <option value="${medicine.mid}"
+                <% if(stock.mid == medicine.mid){ %>
+                selected
+                <% } %>
+                >${medicine.mid}</option>
+                <% } %>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item"  id="mname">
+        <label class="layui-form-label">药品名称</label>
+        <div class="layui-input-block">
+            <select name="mname" lay-filter="mname" id="mmname" disabled>
+                <option value="">--请选择--</option>
+                <% for(medicine in medicines){ %>
+                <option value="${medicine.mname}"
+                <% if(stock.mname == medicine.mname){ %>
+                selected
+                <% } %>
+                >${medicine.mname}</option>
+                <% } %>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">药品价格</label>
+        <div class="layui-input-block">
+            <input type="text" name="mprice" required lay-verify="required" placeholder="请输入药品价格" autocomplete="off"
+                   id="mprice" class="layui-input" value="${stock.mprice!}" disabled>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">数量</label>
+        <div class="layui-input-block">
+            <input type="text" name="mnum" required lay-verify="required" placeholder="数量" autocomplete="off"
+                id="mnum" class="layui-input" value="${stock.mnum!}" disabled>
+        </div>
+    </div>
+    <div class="layui-form-item" id="spid">
+        <label class="layui-form-label">供应商</label>
+        <div class="layui-input-block">
+            <select name="spid" lay-filter="spid" id="sspid" disabled>
+                <option value="">--请选择--</option>
+                <% for(supplier in suppliers){ %>
+                <option value="${supplier.spname}"
+                <% if(stock.spid == supplier.spname){ %>
+                selected
+                <% } %>
+                >${supplier.spname}</option>
+                <% } %>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item" id="dated">
+        <label class="layui-form-label">入库日期</label>
+        <div class="layui-input-block">
+            <input type="text" name="stime" required lay-verify="required" autocomplete="off" id="stime"
+                   disabled   class="layui-input" placeholder="yyyy-MM-dd HH:mm:ss" value="${trim(stock.stime!,'yyyy-MM-dd HH:mm:ss')}">
+        </div>
+    </div>
+    <div class="layui-form-item" id="ydated">
+        <label class="layui-form-label">有效期</label>
+        <div class="layui-input-block">
+            <input type="text" name="ytime" required lay-verify="required" autocomplete="off" id="ytime"
+                   disabled  class="layui-input" placeholder="yyyy-MM-dd" value="${trim(stock.ytime!,'yyyy-MM-dd')}">
+        </div>
+    </div>
+    <div class="layui-form-item" id="stype">
+        <label class="layui-form-label">库存类别</label>
+        <div class="layui-input-block">
+            <select name="stype" lay-filter="stype" id="sstype" disabled>
+                <option value="">--请选择--</option>
+                <% for(category in categorys){ %>
+                <option value="${category.cname}"
+                <% if(stock.stype == category.cname){ %>
+                selected
+                <% } %>
+                >${category.cname}</option>
+                <% } %>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="LAY-Stock-submit" id="LAY-Stock-submit" value="确认">
+    </div>
+</div>
+<script src="/static/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/static/'
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','form','laydate','upload'], function () {
+        var $ = layui.$,
+            form = layui.form,
+            upload = layui.upload,
+            laydate = layui.laydate;
+
+        if ($("#op").val() == "") {
+            $("#display").hide();
+        };
+        if($("#op").val() == "sell"){
+            $("#mid").hide();
+            $("#mname").hide();
+            $("#spid").hide();
+            $("#dated").hide();
+            $("#ydated").hide();
+            $("#stype").hide();
+            $("#mnum").attr("disabled",false);
+        }
+        laydate.render({
+            elem: '#stime', //指定元素
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#ytime', //指定元素
+            type: 'date'
+        });
+        if($("#op").val() == "sell") {
+            $("#mnum").blur(function () {
+                if ($("#mnum").val() >${stock.mnum!}) {
+                    layer.msg("数量不足");
+                    $("#LAY-Stock-submit").attr('disabled', true);
+                } else {
+                    $("#LAY-Stock-submit").attr('disabled', false);
+                }
+            });
+        };
+        form.on("select", function(data){
+            $.ajax({
+                url:'/stock/midDisplay',
+                type:'post',
+                dataType:'text',
+                data:{"mid":data.value},
+                success:function(data){
+                    debugger;
+                    var jsonData = eval( '(' + data + ')' ); // eval();方法
+                    $("#mmname").val(jsonData.mname);
+                    $("#mprice").val(jsonData.mprice);
+                    $("#mnum").val(jsonData.mnum);
+                    $("#sspid").val(jsonData.spid);
+                    $("#stime").val(jsonData.stime);
+                    $("#ytime").val(jsonData.ytime);
+                    $("#sstype").val(jsonData.stype);
+                    form.render('select','layuiadmin-form-sysstockadmin');
+                }
+            })
+        });
+    });
+</script>
+</body>
+</html>

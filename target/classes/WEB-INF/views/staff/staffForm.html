@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="${ctxPath}/static/layui/css/layui.css" media="all">
+</head>
+<body background="/img/login.png">
+<div class="layui-form" lay-filter="layuiadmin-form-sysstaffadmin" id="layuiadmin-form"
+     style="padding: 20px;">
+    <input type="hidden" value="${staff.staffid!}" class="layui-input" name="staffid">
+    <input type="hidden" value="${op}" id="op">
+    <div class="layui-form-item">
+        <label class="layui-form-label">职工名称</label>
+        <div class="layui-input-block">
+            <input type="text" id="staffname" name="staffname" required lay-verify="required" placeholder="请输入职工名称" autocomplete="off"
+                   class="layui-input" value="${staff.staffname!}">
+        </div>
+    </div>
+    <div class="layui-form-item" lay-filter="staffsex">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <%if(staff.staffsex == '男'){%>
+            <input type="radio" name="staffsex" value="男" title="男" checked>
+            <input type="radio" name="staffsex" value="女" title="女">
+            <%}else{%>
+            <input type="radio" name="staffsex" value="男" title="男">
+            <input type="radio" name="staffsex" value="女" title="女" checked>
+            <%}%>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">电话</label>
+        <div class="layui-input-block">
+            <input type="text" name="stafftel" required lay-verify="required" placeholder="请输入电话" autocomplete="off"
+                   class="layui-input" value="${staff.stafftel!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="staffadd" required lay-verify="required" placeholder="请输入地址" autocomplete="off"
+                   class="layui-input" value="${staff.staffadd!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">身份证</label>
+        <div class="layui-input-block">
+            <input type="text" name="staffcard" required lay-verify="required" placeholder="请输入身份证" autocomplete="off"
+                   class="layui-input" value="${staff.staffcard!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <input type="text" name="staffzip" required lay-verify="required" placeholder="请输入地址" autocomplete="off"
+                   class="layui-input" value="${staff.staffzip!}">
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="LAY-Staff-submit" id="LAY-Staff-submit" value="确认">
+    </div>
+</div>
+<script src="/static/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/static/'
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','form','laydate','upload'], function () {
+        var $ = layui.$,
+            form = layui.form,
+            upload = layui.upload,
+            laydate = layui.laydate;
+
+        debugger;
+        if ($("#op").val() == "") {
+            $("#display").hide();
+        };
+
+        if ($("#op").val() == "view") {
+            $("input").attr("readOnly", "true");
+        }
+
+        /**
+         * 判断是否是空
+         */
+        function isEmpty(value){
+            if(value == null || value == "" || value == "undefined" || value == undefined || value == "null"){
+                return true;
+            }
+            else{
+                value = value.replace(/\s/g,"");
+                if(value == ""){
+                    return true;
+                }
+                return false;
+            }
+        }
+
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it.cn.dao.StockDao">
+
+    <sql id="StockColumns">
+        a.id AS "id",
+        a.mid AS "mid",
+        a.mname AS "mname",
+        a.mprice AS "mprice",
+        a.mnum AS "mnum",
+        a.spid AS "spid",
+        a.stime AS "stime",
+        a.ytime AS "ytime",
+        a.stype AS "stype",
+        a.status AS "status"
+    </sql>
+
+    <sql id="MedicineDaoJoins">
+        LEFT JOIN medicine m on m.mid = a.mid LEFT JOIN supplier s on s.spid = a.spid LEFT JOIN category ca on ca.cname = a.stype
+    </sql>
+
+    <select id="findList" resultType="Stock" parameterType="Stock">
+        select
+        <include refid="StockColumns" />
+        from stock a
+        <include refid="MedicineDaoJoins" />
+        where 1=1
+        <if test="mname!=null and mname!=''">
+            AND a.mname LIKE "%"#{mname}"%"
+        </if>
+        AND a.status = "0" and a.mnum != "0"
+    </select>
+
+    <select id="findOverdueList" resultType="Stock" parameterType="Stock">
+        select
+        <include refid="StockColumns" />
+        from stock a
+        <include refid="MedicineDaoJoins" />
+        where 1=1
+        <if test="mname!=null and mname!=''">
+            AND a.mname LIKE "%"#{mname}"%"
+        </if>
+        AND a.status = "0" and a.mnum != "0" and a.ytime <![CDATA[ <= ]]> curdate()
+    </select>
+
+    <select id="timeechartnum" resultType="Integer">
+        select
+        count(*)
+        from stock a
+        where 1=1
+        AND a.status = "0" and a.mnum != "0" and a.ytime <![CDATA[ <= ]]> curdate()
+    </select>
+
+    <select id="timeechartnum0" resultType="Integer">
+        select
+        count(*)
+        from stock a
+        where 1=1
+        AND a.status = "0" and a.mnum != "0" and a.ytime <![CDATA[ > ]]> curdate()
+    </select>
+
+    <select id="echart" resultType="Stock">
+        SELECT ss.stype FROM stock ss where ss.mnum !='0' AND ss.status = '0' GROUP BY ss.stype
+    </select>
+
+    <select id="echartnum" resultType="Integer">
+        SELECT count(*) FROM stock ss where ss.mnum !='0' AND ss.status = '0' GROUP BY ss.stype
+    </select>
+
+    <select id="get" resultType="Stock">
+        SELECT
+        <include refid="StockColumns" />
+        FROM stock a
+        WHERE a.id = #{id}
+    </select>
+
+    <update id="update"  parameterType="Stock">
+        UPDATE stock  SET
+        mid = #{mid},
+        mname = #{mname},
+        mprice = #{mprice},
+        mnum = #{mnum},
+        spid = #{spid},
+        stime = #{stime},
+        ytime = #{ytime},
+        stype = #{stype}
+        where id = #{id}
+    </update>
+
+    <insert id="insert">
+        INSERT INTO stock(
+        id,
+        mid,
+        mname,
+        mprice,
+        mnum,
+        spid,
+        stime,
+        ytime,
+        stype,
+        status
+        )
+        VALUES(
+        #{id},
+        #{mid},
+        #{mname},
+        #{mprice},
+        #{mnum},
+        #{spid},
+        #{stime},
+        #{ytime},
+        #{stype},
+        #{status}
+        )
+    </insert>
+
+    <delete id="delete">
+        UPDATE stock a SET a.status = "1" WHERE id = #{id}
+    </delete>
+</mapper>

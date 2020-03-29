@@ -1,0 +1,7 @@
+${AnsiColor.BRIGHT_CYAN}$$		  	< Hi, 我是牛牛.. >		  	         $$
+${AnsiColor.BRIGHT_YELLOW}$$		-----------------                    $$
+${AnsiColor.BRIGHT_GREEN}$$		        \   ^__^                         $$
+${AnsiColor.BRIGHT_RED}$$			         \  (oo)\_______             $$
+${AnsiColor.BRIGHT_CYAN}$$		            (__)\       )\/\             $$
+${AnsiColor.BRIGHT_MAGENTA}$$ 		                ||----w |            $$
+${AnsiColor.BRIGHT_GREEN}$$			                ||     ||            $$

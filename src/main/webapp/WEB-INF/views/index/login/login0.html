@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页</title>
+    <link rel="stylesheet" href="/style/admin.css" media="all">
+    <link rel="stylesheet" href="/style/login.css" media="all">
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/layui/css/style.css" media="all">
+    <style>
+        .layui-elip{
+            overflow-wrap: break-word;
+            text-shadow: 2px 2px 10px rgb(192, 31, 14);
+        }
+        .fl{
+            color: #b8c0bb;
+            text-shadow: 2px 2px 10px rgb(124, 34, 128);
+        }
+        .fr{
+            color: #b8c0bb;
+            text-shadow: 2px 2px 10px rgb(124, 34, 128);
+        }
+        body{
+            background-size: 100%;
+        }
+    </style>
+</head>
+<body background="/img/bg.jpg">
+<div class="login-main layadmin-user-login layadmin-user-display-show">
+    <header class="layui-elip">药品管理系统</header>
+    <form class="layui-form"  action="/loginGet" method="post">
+        <div class="layui-input-inline">
+            <input type="text" id="sysuserLogin" name="sysuserLogin" required lay-verify="required" onchange="checkLogin(this.value)" placeholder="用户名" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <input type="password" name="sysuserPassWord" required lay-verify="required" placeholder="密码" autocomplete="off"
+                   class="layui-input">
+        </div>
+        <div class="layui-input-inline  layui-col-space10">
+            <div class="layui-col-md8">
+                <input type="text" id="code" name="code" placeholder="验证码" class="layui-input"  autocomplete="off"/>
+            </div>
+            <div class="layui-col-md4">
+                <img style="border-radius:10px;" id="imgObj" class="change" alt="验证码" src="/validateCode/produce" />
+            </div>
+        </div>
+        <div class="layui-input-inline login-btn">
+            <button lay-submit lay-filter="login" class="layui-btn">登录</button>
+        </div>
+        <hr/>
+        <div class="layui-row  layui-col-space30">
+        <div class="layui-col-md3"><a href="/toResign" class="fl">立即注册</a></div>
+        <div class="layui-col-md6" id="usercheck" style="color: white;">${error}</div>
+        <div class="layui-col-md3"><a id="out" class="fr">忘记密码</a></div>
+        </div>
+    </form>
+</div>
+
+
+<script src="/layui/layui.js"></script>
+<!--
+<script src="/caver.js"></script>
+-->
+<script type="text/javascript">
+
+    layui.use(['form','layer','jquery'], function () {
+        // 操作对象
+        var form = layui.form,
+             $ = layui.jquery,
+             layer = layui.layer;
+
+        //找回密码
+        $("#out").click(function () {
+            layer.msg("此服务暂未开通")
+        });
+
+        //刷新图片
+        $(".change").click(function () {
+            var src = $("#imgObj").attr("src");
+            $("#imgObj").attr("src",changeUrl(src));
+        });
+        //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+        function changeUrl(url) {
+            var timestamp = new Date().valueOf();
+            var index = url.indexOf("?",url);
+            if (index > 0) {
+//            url = url.substring(0, url.indexOf(url, "?"));
+                url = url.substring(0, index);
+            }
+            if ((url.indexOf("&") >= 0)) {
+                url = url + "×tamp=" + timestamp;
+            } else {
+                url = url + "?timestamp=" + timestamp;
+            }
+            return url;
+        }
+
+    });
+
+    //检测用户名是否存在
+    function checkLogin(sysuserLogin){
+        debugger;
+        layui.$.ajax({
+            url:'/checkUser',
+            data:{"sysuserLogin":sysuserLogin},
+            dataType:'text',
+            type:'post',
+            success:function (data) {
+                debugger;
+                if(data == 0){
+                    debugger;
+                    setTimeout(function() {
+                        layui.$("#sysuserLogin").focus();
+                    }, 0);
+                    layui.$("#usercheck").html(".....账号不存在,请重新输入.....")
+                }else{
+                    layui.$("#usercheck").html("")
+                }
+            }
+        })
+    }
+</script>
+<script type='text/javascript'>
+    (function(m, ei, q, i, a, j, s) {
+        m[i] = m[i] || function() {
+            (m[i].a = m[i].a || []).push(arguments)
+        };
+        j = ei.createElement(q),
+            s = ei.getElementsByTagName(q)[0];
+        j.async = true;
+        j.charset = 'UTF-8';
+        j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t';
+        s.parentNode.insertBefore(j, s);
+    })(window, document, 'script', '_MEIQIA');
+    _MEIQIA('entId', 118789);
+</script>
+</body>
+</html>

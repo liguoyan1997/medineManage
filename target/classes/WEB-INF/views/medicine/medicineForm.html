@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="${ctxPath}/static/layui/css/layui.css" media="all">
+</head>
+<body background="/img/login.png">
+<div class="layui-form" lay-filter="layuiadmin-form-sysmedicineadmin" id="layuiadmin-form"
+     style="padding: 20px;">
+    <input type="hidden" value="${op}" id="op">
+    <div class="layui-form-item">
+        <label class="layui-form-label">药品编号</label>
+        <div class="layui-input-block">
+            <input type="text" name="mid" required lay-verify="required" placeholder="请输入药品编号" autocomplete="off"
+                   class="layui-input" value="${medicine.mid!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">药品名称</label>
+        <div class="layui-input-block">
+            <input type="text" id="mname" name="mname" required lay-verify="required" placeholder="请输入药品名称" autocomplete="off"
+                   class="layui-input" value="${medicine.mname!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">药品建成</label>
+        <div class="layui-input-block">
+            <input type="text"  name="mshortname" required lay-verify="required" placeholder="请输入药品建成" autocomplete="off"
+                   class="layui-input" value="${medicine.mshortname!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">药品规格</label>
+        <div class="layui-input-block">
+            <input type="text" name="mnors" required lay-verify="required" placeholder="请输入药品规格" autocomplete="off"
+                   class="layui-input" value="${medicine.mnors!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">药品场地</label>
+        <div class="layui-input-block">
+            <input type="text" name="marea" required lay-verify="required" placeholder="请输入药品场地" autocomplete="off"
+                   class="layui-input" value="${medicine.marea!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">批号</label>
+        <div class="layui-input-block">
+            <input type="text" name="mlot" required lay-verify="required" placeholder="请输入批号" autocomplete="off"
+                   class="layui-input" value="${medicine.mlot!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">进价</label>
+        <div class="layui-input-block">
+            <input type="text" name="minpri" required lay-verify="required" placeholder="请输入进价" autocomplete="off"
+                   class="layui-input" value="${medicine.minpri!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">批发价</label>
+        <div class="layui-input-block">
+            <input type="text" name="mwpri" required lay-verify="required" placeholder="请输入批发价" autocomplete="off"
+                   class="layui-input" value="${medicine.mwpri!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">零售价</label>
+        <div class="layui-input-block">
+            <input type="text" name="mpri" required lay-verify="required" placeholder="请输入零售价" autocomplete="off"
+                   class="layui-input" value="${medicine.mpri!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">数量</label>
+        <div class="layui-input-block">
+            <input type="text" name="mnum" required lay-verify="required" placeholder="请输入数量" autocomplete="off"
+                   class="layui-input" value="${medicine.mnum!}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">供应商</label>
+        <div class="layui-input-block">
+            <select name="mcon" lay-filter="mcon">
+                <option value="">--请选择--</option>
+                <% for(supplier in suppliers){ %>
+                <option value="${supplier.spname}"
+                <% if(medicine.mcon == supplier.spname){ %>
+                selected
+                <% } %>
+                >${supplier.spname}</option>
+                <% } %>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类别</label>
+        <div class="layui-input-block">
+            <select name="mcate" lay-filter="mcate">
+                <option value="">--请选择--</option>
+                <% for(category in categorys){ %>
+                <option value="${category.cname}"
+                <% if(medicine.mcate == category.cname){ %>
+                selected
+                <% } %>
+                >${category.cname}</option>
+                <% } %>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">进货时间</label>
+        <div class="layui-input-block">
+            <input type="text" name="jtime" required lay-verify="required" autocomplete="off" id="jtime"
+                   class="layui-input" placeholder="yyyy-MM-dd HH:mm:ss" value="${trim(medicine.jtime!,'yyyy-MM-dd HH:mm:ss')}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">有效期至</label>
+        <div class="layui-input-block">
+            <input type="text" name="musetime" required lay-verify="required" autocomplete="off" id="musetime"
+                   class="layui-input" placeholder="yyyy-MM-dd" value="${trim(medicine.musetime!,'yyyy-MM-dd')}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <input type="text" name="memo" required lay-verify="required" placeholder="备注" autocomplete="off"
+                   class="layui-input" value="${medicine.memo!}">
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="LAY-Medicine-submit" id="LAY-Medicine-submit" value="确认">
+    </div>
+</div>
+<script src="/static/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/static/'
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','form','laydate','upload'], function () {
+        var $ = layui.$,
+            form = layui.form,
+            upload = layui.upload,
+            laydate = layui.laydate;
+
+        if ($("#op").val() == "") {
+            $("#display").hide();
+        };
+
+        if ($("#op").val() == "view") {
+            $("input").attr("readOnly", "true");
+        }
+
+        if ($("#op").val() == "edit") {
+            $("#musetime").attr("disabled","disabled")
+        };
+
+        laydate.render({
+            elem: '#musetime', //指定元素
+            type: 'date'
+        });
+
+        laydate.render({
+            elem: '#jtime', //指定元素
+            type: 'datetime'
+        });
+
+        $("#LAY-Medicine-submit").click(function () {
+            var jtime = $("#jtime").val().toString().substring(0,10);  //进货日期
+            var musetime = $("#musetime").val();   //有效期至
+            debugger
+            if(jtime > musetime){
+                layer.msg("进货期或者有效期输入错误", {time: 2000, icon: 2});
+                return false;
+            }
+            if(new Date(musetime) < new Date()){
+                layer.msg("药品已过期--禁止进货", {time: 2000, icon: 2});
+                return false;
+            }
+        })
+    })
+</script>
+</body>
+</html>

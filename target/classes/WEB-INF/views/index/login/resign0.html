@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>注册页</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/layui/css/style.css">
+    <style>
+        .fl{
+            color: #b8c0bb;
+            text-shadow: 2px 2px 10px rgb(124, 34, 128);
+        }
+        .layui-elip{
+            overflow-wrap: break-word;
+            text-shadow: 2px 2px 10px rgb(192, 31, 14);
+        }
+        body{
+            background-size: 100%;
+        }
+    </style>
+</head>
+<body background="/img/bg.jpg">
+
+<div class="login-main">
+    <header class="layui-elip" style="width: 82%">用户注册</header>
+
+    <!-- 表单选项 -->
+    <form class="layui-form">
+        <div class="layui-input-inline">
+            <!-- 用户名 -->
+            <div class="layui-inline" style="width: 85%">
+                <input type="text" id="user" name="sysuserLogin" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            </div>
+            <!-- 对号 -->
+            <div class="layui-inline">
+                <i class="layui-icon" id="ri" style="color: green;font-weight: bolder;" hidden></i>
+            </div>
+            <!-- 错号 -->
+            <div class="layui-inline">
+                <i class="layui-icon" id="wr" style="color: red; font-weight: bolder;" hidden>ဆ</i>
+            </div>
+        </div>
+        <!-- 密码 -->
+        <div class="layui-input-inline">
+            <div class="layui-inline" style="width: 85%">
+                <input type="password" id="pwd" name="sysuserPassWord" required  lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            </div>
+            <!-- 对号 -->
+            <div class="layui-inline">
+                <i class="layui-icon" id="pri" style="color: green;font-weight: bolder;" hidden></i>
+            </div>
+            <!-- 错号 -->
+            <div class="layui-inline">
+                <i class="layui-icon" id="pwr" style="color: red; font-weight: bolder;" hidden>ဆ</i>
+            </div>
+        </div>
+        <!-- 确认密码 -->
+        <div class="layui-input-inline">
+            <div class="layui-inline" style="width: 85%">
+                <input type="password" id="rpwd" name="resysuserPassWord" required  lay-verify="required" placeholder="请确认密码" autocomplete="off" class="layui-input">
+            </div>
+            <!-- 对号 -->
+            <div class="layui-inline">
+                <i class="layui-icon" id="rpri" style="color: green;font-weight: bolder;" hidden></i>
+            </div>
+            <!-- 错号 -->
+            <div class="layui-inline">
+                <i class="layui-icon" id="rpwr" style="color: red; font-weight: bolder;" hidden>ဆ</i>
+            </div>
+        </div>
+
+        <div class="layui-input-inline">
+            <div class="layui-inline" style="width: 85%">
+                <input type="text" id="n1"  name="sysuserName" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+            <!-- 对号 -->
+            <div class="layui-inline">
+                <i class="layui-icon" id="pri1" style="color: green;font-weight: bolder;" hidden></i>
+            </div>
+        </div>
+        <div class="layui-input-inline">
+            <div class="layui-inline" style="width: 85%">
+                <input type="text"  id="n2" name="sysuserAge" required  lay-verify="required" placeholder="请确认年龄" autocomplete="off" class="layui-input">
+            </div>
+            <!-- 对号 -->
+            <div class="layui-inline">
+                <i class="layui-icon" id="pri2" style="color: green;font-weight: bolder;" hidden></i>
+            </div>
+            <!-- 错号 -->
+            <div class="layui-inline">
+                <i class="layui-icon" id="pri6" style="color: red; font-weight: bolder;" hidden>ဆ</i>
+            </div>
+        </div>
+
+        <div class="layui-input-inline login-btn" style="width: 85%">
+            <button type="submit" lay-submit lay-filter="sub" class="layui-btn">注册</button>
+        </div>
+        <hr style="width: 85%" />
+        <p style="width: 85%;text-align: right;"><a href="/toLogin" class="fl">已有账号？立即登录</a></p>
+    </form>
+</div>
+
+
+<script src="/layui/layui.js"></script>
+<script src="/caver.js"></script>
+<script type="text/javascript">
+    layui.use(['form','jquery','layer',"laydate"], function () {
+        var form   = layui.form;
+        var $      = layui.jquery;
+        var layer  = layui.layer;
+        var laydate = layui.laydate;
+        //添加表单失焦事件
+        //验证表单
+        laydate.render({
+            elem: '#syscreateTime', //指定元素
+            type: 'datetime'
+        });
+
+        $('#user').change(function() {
+            var user = $(this).val();
+
+            //alert(user);
+            $.ajax({
+                url:'/checkUser',
+                type:'post',
+                dataType:'text',
+                data:{sysuserLogin:user},
+                //验证用户名是否可用
+                success:function(data){
+                    debugger;
+                    if (data == "0") {
+                        $('#ri').removeAttr('hidden');
+                        $('#wr').attr('hidden','hidden');
+                    } else {
+                        setTimeout(function() {
+                            layui.$("#user").focus();
+                        }, 0);
+                        $('#wr').removeAttr('hidden');
+                        $('#ri').attr('hidden','hidden');
+                        layer.msg('当前用户名已被占用! ')
+                    }
+                }
+            })
+
+        });
+
+        // you code ...
+        // 为密码添加正则验证
+        $('#pwd').change(function() {
+            var reg = /^[\w]{6,12}$/;
+            if(!($('#pwd').val().match(reg))){
+                setTimeout(function() {
+                    layui.$("#pwd").focus();
+                }, 0);
+                $('#pwr').removeAttr('hidden');
+                $('#pri').attr('hidden','hidden');
+                layer.msg('请输入合法密码');
+            }else {
+                $('#pri').removeAttr('hidden');
+                $('#pwr').attr('hidden','hidden');
+            }
+        });
+
+        $('#n2').change(function() {
+            var reg = /^(?:[1-9][0-9]?|1[01][0-9]|120)$/;
+            if(!($('#n2').val().match(reg))){
+                setTimeout(function() {
+                    layui.$("#n2").focus();
+                }, 0);
+                $('#pri6').removeAttr('hidden');
+                $('#pri2').attr('hidden','hidden');
+                layer.msg('请输入合法年龄');
+            }else{
+                debugger;
+                $('#pri2').removeAttr('hidden');
+                $('#pri6').attr('hidden','hidden');
+            }
+        });
+
+        $('#n1').blur(function() {
+                $('#pri1').removeAttr('hidden');
+        });
+
+        $('#syscreateTime').blur(function() {
+                $('#pri3').removeAttr('hidden');
+        });
+
+        //验证两次密码是否一致
+        $('#rpwd').change(function() {
+            if($('#pwd').val() != $('#rpwd').val()){
+                setTimeout(function() {
+                    layui.$("#rpwd").focus();
+                }, 0);
+                $('#rpwr').removeAttr('hidden');
+                $('#rpri').attr('hidden','hidden');
+                layer.msg('两次输入密码不一致!');
+            }else {
+                $('#rpri').removeAttr('hidden');
+                $('#rpwr').attr('hidden','hidden');
+            };
+        });
+
+        //
+        //添加表单监听事件,提交注册信息
+        form.on('submit(sub)', function(data) {
+            $.ajax({
+                url:'/sysuser/resign',
+                type:'post',
+                dataType:'text',
+                data:data.field,
+                success:function(data){
+                    debugger;
+                    var obj = eval('(' + data + ')');
+                    if(!(null == obj.data.message || "" == obj.data.message)){
+                        // layer.msg(result.data.message, {time: 6000, icon: 2});
+                        layer.alert(obj.data.message);
+                        return false;
+                    }
+                    if (obj.msg == "保存成功") {
+                        layer.msg(obj.msg, {time: 2000, icon: 6});
+                        window.location.href="/";
+                    }else {
+                        layer.msg(obj.msg, {time: 2000, icon: 6});
+                    }
+                }
+            })
+            //防止页面跳转
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

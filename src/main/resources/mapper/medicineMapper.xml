@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it.cn.dao.MedicineDao">
+    <sql id="MedicineDaoColumns">
+        a.mid AS "mid"
+        ,a.mname AS "mname"
+        ,a.mshortname AS "mshortname"
+        ,a.mnors AS "mnors"
+        ,a.marea AS "marea"
+        ,a.mlot AS "mlot"
+        ,a.minpri AS "minpri"
+        ,a.mwpri AS "mwpri"
+        ,a.mpri AS "mpri"
+        ,a.mnum AS "mnum"
+        ,a.mcon AS "mcon"
+        ,a.mcate AS "mcate"
+        ,a.jtime AS "jtime"
+        ,a.musetime AS "musetime"
+        ,a.memo AS "memo"
+        ,a.status AS "status"
+    </sql>
+
+    <sql id="MedicineDaoJoins">
+        LEFT JOIN supplier s on s.spname = a.mcon LEFT JOIN category ca on ca.cname = a.mcate
+    </sql>
+
+    <select id="get" resultType="Medicine">
+        SELECT
+            <include refid="MedicineDaoColumns"/>
+        FROM medicine a
+            <include refid="MedicineDaoJoins"/>
+        WHERE a.mid = #{mid}
+    </select>
+
+  <select id="findList" resultType="Medicine">
+        SELECT
+			<include refid="MedicineDaoColumns"/>
+		FROM medicine a
+            <include refid="MedicineDaoJoins"/>
+        where 1=1 And a.status = '0'
+        <if test="mname!=null and mname!=''">
+            AND a.mname LIKE "%"#{mname}"%"
+        </if>
+    </select>
+
+    <select id="findListID" resultType="Medicine">
+        SELECT
+        <include refid="MedicineDaoColumns"/>
+        FROM medicine a
+        <include refid="MedicineDaoJoins"/>
+        where 1=1
+        <if test="mname!=null and mname!=''">
+            AND a.mname LIKE "%"#{mname}"%"
+        </if>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO medicine(
+            mid
+            ,mname
+            ,mshortname
+            ,mnors
+            ,marea
+            ,mlot
+            ,minpri
+            ,mwpri
+            ,mpri
+            ,mnum
+            ,mcon
+            ,mcate
+            ,jtime
+            ,musetime
+            ,memo
+            ,status
+        ) VALUES (
+            #{mid}
+            ,#{mname}
+            ,#{mshortname}
+            ,#{mnors}
+            ,#{marea}
+            ,#{mlot}
+            ,#{minpri}
+            ,#{mwpri}
+            ,#{mpri}
+            ,#{mnum}
+            ,#{mcon}
+            ,#{mcate}
+            ,#{jtime}
+            ,#{musetime}
+            ,#{memo}
+            ,#{status}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE medicine SET
+            mname = #{mname}
+            ,mshortname = #{mshortname}
+            ,mnors = #{mnors}
+            ,marea = #{marea}
+            ,mlot = #{mlot}
+            ,minpri = #{minpri}
+            ,mwpri = #{mwpri}
+            ,mpri = #{mpri}
+            ,mnum = #{mnum}
+            ,mcon = #{mcon}
+            ,mcate = #{mcate}
+            ,jtime = #{jtime}
+            ,musetime = #{musetime}
+            ,memo = #{memo}
+		WHERE mid = #{mid}
+    </update>
+
+    <update id="delete">
+        update medicine set status = '1' WHERE mid = #{mid}
+    </update>
+</mapper>
