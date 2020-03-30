@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="44fd2094-a2b4-4d58-a363-84e1759ccbbe" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/it/cn/controller/MedicineController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/it/cn/controller/MedicineController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/modules/medicine.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/modules/medicine.js" afterDir="false" />
-    </list>
+    <list default="true" id="44fd2094-a2b4-4d58-a363-84e1759ccbbe" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -70,20 +66,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
+            <state relative-caret-position="229">
               <caret line="42" column="8" selection-start-line="42" selection-start-column="8" selection-end-line="46" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/static/modules/medicine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="356">
-              <caret line="139" column="21" selection-start-line="139" selection-start-column="21" selection-end-line="139" selection-end-column="21" />
+            <state relative-caret-position="264">
+              <caret line="143" column="41" selection-start-line="143" selection-start-column="41" selection-end-line="143" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -234,8 +230,8 @@
         <option value="$PROJECT_DIR$/src/main/resources/mapper/medicineMapper.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/it/cn/entity/Medicine.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/it/cn/base/BaseService.java" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/modules/medicine.js" />
         <option value="$PROJECT_DIR$/src/main/java/com/it/cn/controller/MedicineController.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/modules/medicine.js" />
       </list>
     </option>
   </component>
@@ -264,7 +260,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="443" />
     <option name="y" value="7" />
     <option name="width" value="1400" />
@@ -889,7 +885,7 @@
       <workItem from="1585322619213" duration="760000" />
       <workItem from="1585396845020" duration="4457000" />
       <workItem from="1585464565267" duration="948000" />
-      <workItem from="1585545692859" duration="839000" />
+      <workItem from="1585545692859" duration="1004000" />
     </task>
     <task id="LOCAL-00001" summary="药品">
       <created>1585489741846</created>
@@ -902,7 +898,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="290590000" />
+    <option name="totallyTimeSpent" value="290755000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -914,7 +910,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21860817" />
@@ -1373,13 +1369,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/modules/medicine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="356">
-          <caret line="139" column="21" selection-start-line="139" selection-start-column="21" selection-end-line="139" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/it/cn/controller/MedicineController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="172">
@@ -1394,8 +1383,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
+        <state relative-caret-position="229">
           <caret line="42" column="8" selection-start-line="42" selection-start-column="8" selection-end-line="46" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/modules/medicine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="143" column="41" selection-start-line="143" selection-start-column="41" selection-end-line="143" selection-end-column="41" />
         </state>
       </provider>
     </entry>
