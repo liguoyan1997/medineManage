@@ -141,7 +141,7 @@ layui.define(['table', 'form'], function (exports) {
                 }, error: function (ex) {
                     debugger;
                     if(data.code = '-1'){
-                        layer.msg('操作失败', {time: 2000, icon: 6});
+                        layer.msg('操作失败!!', {time: 2000, icon: 6});
                     }
                 }
             });
